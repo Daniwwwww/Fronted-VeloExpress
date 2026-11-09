@@ -1,8 +1,28 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { iniciarSesion, obtenerPerfil } from '../services/auth';
+import { iniciarSesion } from '../services/auth';
 
 const AuthContext = createContext(null);
+
 export const useAuth = () => useContext(AuthContext);
+
+// Leer los datos que vienen dentro del token
+const obtenerDatosToken = (token) => {
+  try {
+    const payload = token.split('.')[1];
+    const datos = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+
+    if (datos.exp && datos.exp * 1000 < Date.now()) {
+      return null;
+    }
+
+    return {
+      id: datos.id,
+      correo: datos.correo
+    };
+  } catch {
+    return null;
+  }
+};
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -13,20 +33,52 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  // Al abrir la app: si hay token guardado, recupera el perfil
+  // Revisar si existe una sesión guardada
   useEffect(() => {
-    if (!localStorage.getItem('token')) { setLoading(false); return; }
-    obtenerPerfil().then(setUser).catch(logout).finally(() => setLoading(false));
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const usuario = obtenerDatosToken(token);
+
+      if (usuario) {
+        setUser(usuario);
+      } else {
+        logout();
+      }
+    }
+
+    setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
-    const { token } = await iniciarSesion(email, password);
+  // Iniciar sesión
+  const login = async (correo, password) => {
+    const respuesta = await iniciarSesion(correo, password);
+    const token = respuesta.token;
+
+    if (!token) {
+      throw new Error('No se recibió el token');
+    }
+
+    const usuario = obtenerDatosToken(token);
+
+    if (!usuario) {
+      throw new Error('El token recibido no es válido');
+    }
+
     localStorage.setItem('token', token);
-    setUser(await obtenerPerfil());
+    setUser(usuario);
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        loading,
+        login,
+        logout
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
