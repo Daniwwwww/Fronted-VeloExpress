@@ -1,0 +1,189 @@
+
+* {
+  box-sizing: border-box;
+}
+
+.dashboard {
+  min-height: 100vh;
+  background: #f4f6fa;
+  color: #172033;
+  font-family: Arial, sans-serif;
+}
+
+.dashboard-header {
+  background: #ffffff;
+  padding: 15px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-logo {
+  width: 155px;
+  height: 65px;
+  object-fit: contain;
+}
+
+.dashboard-nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.dashboard-nav a {
+  color: #172033;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.dashboard-nav button {
+  background: #e64b28;
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dashboard-main {
+  width: 86%;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.dashboard-welcome {
+  margin-top: 45px;
+  padding: 55px 45px;
+  border-radius: 18px;
+  background: linear-gradient(120deg, #142c50, #1766a5);
+  color: white;
+}
+
+.dashboard-tag {
+  color: #ffbd59;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.dashboard-welcome h1 {
+  font-size: 36px;
+  margin: 15px 0 10px;
+}
+
+.dashboard-welcome p {
+  color: #e0eaf5;
+  font-size: 16px;
+}
+
+.dashboard-search {
+  width: 100%;
+  max-width: 550px;
+  margin-top: 20px;
+  padding: 16px;
+  border: none;
+  border-radius: 9px;
+  outline: none;
+  font-size: 15px;
+}
+
+.dashboard-services {
+  padding: 45px 0;
+}
+
+.dashboard-section-title h2 {
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+.dashboard-section-title p {
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.service-card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+}
+
+.service-card img {
+  width: 100%;
+  height: 175px;
+  object-fit: cover;
+}
+
+.service-info {
+  padding: 18px;
+}
+
+.service-info h3 {
+  margin: 0 0 10px;
+  color: #17375e;
+}
+
+.service-info p {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.no-services {
+  padding: 25px;
+  color: #6b7280;
+}
+
+.dashboard-footer {
+  padding: 25px;
+  text-align: center;
+  background: #142c50;
+  color: white;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .service-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .dashboard-nav {
+    gap: 15px;
+  }
+
+  .dashboard-main {
+    width: 92%;
+  }
+
+  .dashboard-welcome {
+    padding: 35px 22px;
+  }
+
+  .dashboard-welcome h1 {
+    font-size: 27px;
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
+import Dashboard from './pages/Dashboard';
 
 export default function App() {
   const { user, logout, loading } = useAuth();
@@ -17,62 +18,39 @@ export default function App() {
 
   return (
     <>
-      <nav style={{ display: 'flex', gap: 16, padding: 16 }}>
-        {user ? (
-          <>
-            <Link to="/perfil">Mi perfil</Link>
+      {!user && (
+        <nav style={{ display: 'flex', gap: 16, padding: 16 }}>
+          <Link to="/login">Ingresar</Link>
+          <Link to="/register">Registrarse</Link>
+        </nav>
+      )}
 
-            <button onClick={logout}>
-              Salir
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to="/login">Ingresar</Link>
-            <Link to="/register">Registrarse</Link>
-          </>
-        )}
-      </nav>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Navigate to={user ? '/dashboard' : '/login'} replace />
+          }
+        />
 
-      <main style={{ padding: 16 }}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Navigate
-                to={user ? '/perfil' : '/login'}
-                replace
-              />
-            }
-          />
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/dashboard" replace /> : <Login />}
+        />
 
-          <Route
-            path="/login"
-            element={
-              user ? <Navigate to="/perfil" replace /> : <Login />
-            }
-          />
+        <Route
+          path="/register"
+          element={user ? <Navigate to="/dashboard" replace /> : <Register />}
+        />
 
-          <Route
-            path="/register"
-            element={
-              user ? <Navigate to="/perfil" replace /> : <Register />
-            }
-          />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/perfil" element={<Profile />} />
+          <Route path="/perfil/editar" element={<EditProfile />} />
+        </Route>
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/perfil" element={<Profile />} />
-            <Route path="/perfil/editar" element={<EditProfile />} />
-
-            {/* Aquí irán las rutas protegidas del CRUD */}
-          </Route>
-
-          <Route
-            path="*"
-            element={<p>Página no encontrada</p>}
-          />
-        </Routes>
-      </main>
+        <Route path="*" element={<p>Página no encontrada</p>} />
+      </Routes>
     </>
   );
 }
