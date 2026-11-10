@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/Logo.png';
+import '../css/Auth.css';
 
 export default function Login() {
   const { login } = useAuth();
@@ -13,6 +15,7 @@ export default function Login() {
 
   const [error, setError] = useState('');
   const [cargando, setCargando] = useState(false);
+  const [mostrarPassword, setMostrarPassword] = useState(false);
 
   const onChange = (e) => {
     setForm({
@@ -41,40 +44,88 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <h1>Iniciar sesión</h1>
+    <div className="auth-page">
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <section className="auth-banner">
+        <img src={logo} alt="VELOEXPRESS" />
 
-      <p>
-        <input
-          name="correo"
-          type="email"
-          value={form.correo}
-          onChange={onChange}
-          placeholder="Correo electrónico"
-          required
-        />
-      </p>
+        <div className="auth-banner-content">
+          <span className="auth-tag">BIENVENIDO A VELOEXPRESS</span>
+          <h1>Tu vehículo merece el mejor servicio.</h1>
+          <p>
+            Encuentra profesionales, soluciones y servicios
+            para tu vehículo en un solo lugar.
+          </p>
+        </div>
 
-      <p>
-        <input
-          name="password"
-          type="password"
-          value={form.password}
-          onChange={onChange}
-          placeholder="Contraseña"
-          required
-        />
-      </p>
+        <div className="auth-banner-footer">
+          VELOEXPRESS · Tu camino, nuestra prioridad.
+        </div>
+      </section>
 
-      <button type="submit" disabled={cargando}>
-        {cargando ? 'Ingresando...' : 'Ingresar'}
-      </button>
+      <section className="auth-form-section">
+        <Link to="/" className="auth-back">
+          ← Volver al inicio
+        </Link>
 
-      <p>
-        ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
-      </p>
-    </form>
+        <div className="auth-card">
+          <span className="auth-subtitle">NOS ALEGRA VERTE</span>
+          <h2>Iniciar sesión</h2>
+          <p className="auth-description">
+            Ingresa tus datos para continuar.
+          </p>
+
+          {error && <div className="auth-error">{error}</div>}
+
+          <form onSubmit={onSubmit}>
+            <label htmlFor="correo">Correo electrónico</label>
+            <input
+              id="correo"
+              name="correo"
+              type="email"
+              value={form.correo}
+              onChange={onChange}
+              placeholder="ejemplo@correo.com"
+              required
+            />
+
+            <label htmlFor="password">Contraseña</label>
+            <div className="auth-password">
+              <input
+                id="password"
+                name="password"
+                type={mostrarPassword ? 'text' : 'password'}
+                value={form.password}
+                onChange={onChange}
+                placeholder="Ingresa tu contraseña"
+                required
+              />
+
+              <button
+                type="button"
+                className="auth-show-password"
+                onClick={() => setMostrarPassword(!mostrarPassword)}
+              >
+                {mostrarPassword ? 'Ocultar' : 'Mostrar'}
+              </button>
+            </div>
+
+            <button
+              type="submit"
+              className="auth-submit"
+              disabled={cargando}
+            >
+              {cargando ? 'Ingresando...' : 'Ingresar a mi cuenta'}
+            </button>
+          </form>
+
+          <p className="auth-switch">
+            ¿Todavía no tienes una cuenta?
+            <Link to="/register"> Regístrate aquí</Link>
+          </p>
+        </div>
+      </section>
+
+    </div>
   );
 }
