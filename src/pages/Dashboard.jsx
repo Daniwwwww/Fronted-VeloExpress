@@ -1,7 +1,7 @@
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import api from '../api/axios';
 
 import logo from '../assets/Logo.png';
 import mecanicos from '../assets/Mecanicos.JPG';
@@ -17,28 +17,32 @@ const servicios = [
     descripcion: 'Soluciones, revisiones y reparaciones para tu vehículo.',
     imagen: mecanicos,
     icono: '🔧',
-    etiqueta: 'MANTENIMIENTO'
+    etiqueta: 'MANTENIMIENTO',
+    endpoint: '/mecanicos'
   },
   {
     nombre: 'Lavaderos',
     descripcion: 'Limpieza y cuidado para mantener tu vehículo impecable.',
     imagen: lavaderos,
     icono: '🚘',
-    etiqueta: 'LIMPIEZA'
+    etiqueta: 'LIMPIEZA',
+    endpoint: '/lavaderos'
   },
   {
     nombre: 'Grúas',
     descripcion: 'Opciones de asistencia y transporte para tu vehículo.',
     imagen: gruas,
     icono: '🚨',
-    etiqueta: 'ASISTENCIA'
+    etiqueta: 'ASISTENCIA',
+    endpoint: '/gruas'
   },
   {
     nombre: 'Montallantas',
     descripcion: 'Revisión y soluciones para tus llantas y neumáticos.',
     imagen: montallantas,
     icono: '🛞',
-    etiqueta: 'LLANTAS'
+    etiqueta: 'LLANTAS',
+    endpoint: '/montallantas'
   }
 ];
 
@@ -75,6 +79,53 @@ export default function Dashboard() {
   const [categoria, setCategoria] = useState('Todos');
   const [tareas, setTareas] = useState(tareasIniciales);
 
+  // Estados para los establecimientos de la API
+  const [proveedores, setProveedores] = useState([]);
+  const [cargandoProveedores, setCargandoProveedores] = useState(false);
+  const [errorProveedores, setErrorProveedores] = useState('');
+
+  // Consultar establecimientos cuando se selecciona una categoría
+  useEffect(() => {
+    const cargarProveedores = async () => {
+      if (categoria === 'Todos') {
+        setProveedores([]);
+        setErrorProveedores('');
+        return;
+      }
+
+      const servicioSeleccionado = servicios.find(
+        (servicio) => servicio.nombre === categoria
+      );
+
+      if (!servicioSeleccionado) return;
+
+      try {
+        setCargandoProveedores(true);
+        setErrorProveedores('');
+        setProveedores([]);
+
+        const respuesta = await api.get(servicioSeleccionado.endpoint);
+
+        // Los controladores pueden entregar los registros dentro de data
+        const registros =
+          respuesta.data?.data ??
+          respuesta.data?.datos ??
+          respuesta.data;
+
+        setProveedores(Array.isArray(registros) ? registros : []);
+      } catch (error) {
+        console.error('Error al cargar establecimientos:', error);
+        setErrorProveedores(
+          'No fue posible cargar los establecimientos. Intenta nuevamente.'
+        );
+      } finally {
+        setCargandoProveedores(false);
+      }
+    };
+
+    cargarProveedores();
+  }, [categoria]);
+
   const cerrarSesion = () => {
     logout();
     navigate('/');
@@ -102,6 +153,30 @@ export default function Dashboard() {
 
     return coincideBusqueda && coincideCategoria;
   });
+
+  const categoriaSeleccionada = servicios.find(
+    (servicio) => servicio.nombre === categoria
+  );
+
+  const obtenerDireccion = (proveedor) => {
+    return proveedor.direccion || 'Dirección no registrada';
+  };
+
+  const obtenerTelefono = (proveedor) => {
+    return proveedor.telefono || '';
+  };
+
+  const obtenerPrecio = (proveedor) => {
+    if (
+      proveedor.precio === undefined ||
+      proveedor.precio === null ||
+      proveedor.precio === ''
+    ) {
+      return null;
+    }
+
+    return Number(proveedor.precio).toLocaleString('es-CO');
+  };
 
   return (
     <div className="dashboard">
@@ -334,7 +409,7 @@ export default function Dashboard() {
                       setBusqueda('');
                     }}
                   >
-                    Ver esta categoría <span>→</span>
+                    Ver establecimientos <span>→</span>
                   </button>
                 </div>
               </article>
@@ -355,6 +430,139 @@ export default function Dashboard() {
                 Mostrar todas las categorías
               </button>
             </div>
+          )}
+
+          {/* ESTABLECIMIENTOS REALES DE LA API */}
+          {categoriaSeleccionada && (
+            <section className="providers-section">
+              <div className="providers-heading">
+                <div>
+                  <span>ESTABLECIMIENTOS REGISTRADOS</span>
+                  <h2>{categoriaSeleccionada.icono} {categoriaSeleccionada.nombre}</h2>
+                  <p>
+                    Consulta la información y los datos de contacto disponibles.
+                  </p>
+                </div>
+
+                <span className="providers-count">
+                  {proveedores.length} registrados
+                </span>
+              </div>
+
+              {cargandoProveedores && (
+                <div className="providers-message">
+                  <span>⏳</span>
+                  <h3>Cargando establecimientos...</h3>
+                  <p>Estamos consultando la información.</p>
+                </div>
+              )}
+
+              {!cargandoProveedores && errorProveedores && (
+                <div className="providers-message providers-error">
+                  <span>⚠️</span>
+                  <h3>No pudimos cargar los establecimientos</h3>
+                  <p>{errorProveedores}</p>
+                  <button
+                    onClick={() => {
+                      setCategoria('Todos');
+                      setTimeout(() => setCategoria(categoriaSeleccionada.nombre), 0);
+                    }}
+                  >
+                    Intentar nuevamente
+                  </button>
+                </div>
+              )}
+
+              {!cargandoProveedores &&
+                !errorProveedores &&
+                proveedores.length === 0 && (
+                  <div className="providers-message">
+                    <span>📭</span>
+                    <h3>No hay establecimientos registrados</h3>
+                    <p>
+                      Todavía no hay registros disponibles en esta categoría.
+                    </p>
+                  </div>
+                )}
+
+              {!cargandoProveedores && !errorProveedores && proveedores.length > 0 && (
+                <div className="providers-grid">
+                  {proveedores.map((proveedor, index) => {
+                    const telefono = obtenerTelefono(proveedor);
+                    const precio = obtenerPrecio(proveedor);
+                    const direccion = obtenerDireccion(proveedor);
+
+                    return (
+                      <article
+                        className="provider-card"
+                        key={proveedor.id || index}
+                      >
+                        <div className="provider-card-top">
+                          <div className="provider-avatar">
+                            {categoriaSeleccionada.icono}
+                          </div>
+                          <span className="provider-status">
+                            REGISTRADO
+                          </span>
+                        </div>
+
+                        <h3>{proveedor.nombre || 'Establecimiento sin nombre'}</h3>
+
+                        {proveedor.especialidad && (
+                          <p className="provider-specialty">
+                            {proveedor.especialidad}
+                          </p>
+                        )}
+
+                        <div className="provider-details">
+                          <div>
+                            <span>📍</span>
+                            <p>{direccion}</p>
+                          </div>
+
+                          {telefono && (
+                            <div>
+                              <span>📞</span>
+                              <p>{telefono}</p>
+                            </div>
+                          )}
+
+                          {precio !== null && (
+                            <div>
+                              <span>💰</span>
+                              <p>${precio}</p>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="provider-actions">
+                          {telefono ? (
+                            <a href={`tel:${telefono}`}>
+                              Llamar ahora →
+                            </a>
+                          ) : (
+                            <span className="provider-no-phone">
+                              Sin teléfono registrado
+                            </span>
+                          )}
+
+                          {direccion !== 'Dirección no registrada' && (
+                            <a
+                              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccion)}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="provider-map-link"
+                            >
+                              Ver ubicación
+                            </a>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
           )}
         </section>
 
@@ -392,7 +600,12 @@ export default function Dashboard() {
             </div>
 
             <div className="progress-card">
-              <div className="progress-circle">
+              <div
+                className="progress-circle"
+                style={{
+                  '--progress': `${progreso}%`
+                }}
+              >
                 <div>
                   <strong>{progreso}%</strong>
                   <span>Completado</span>

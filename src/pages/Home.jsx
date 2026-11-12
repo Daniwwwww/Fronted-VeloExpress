@@ -12,62 +12,66 @@ const servicios = [
   {
     nombre: 'Mecánicos',
     imagen: mecanicos,
-    descripcion: 'Soluciones y reparaciones para tu vehículo.',
-    icono: '🔧'
+    descripcion: 'Soluciones y reparaciones para que tu vehículo siga funcionando.',
+    icono: '🔧',
+    numero: '01'
   },
   {
     nombre: 'Lavaderos',
     imagen: lavaderos,
-    descripcion: 'Mantén tu vehículo limpio y reluciente.',
-    icono: '🚘'
+    descripcion: 'Dale a tu vehículo el cuidado y la limpieza que merece.',
+    icono: '🚘',
+    numero: '02'
   },
   {
     nombre: 'Grúas',
     imagen: gruas,
-    descripcion: 'Asistencia cuando más la necesitas.',
-    icono: '🚨'
+    descripcion: 'Asistencia y apoyo cuando más lo necesitas en el camino.',
+    icono: '🚨',
+    numero: '03'
   },
   {
     nombre: 'Montallantas',
     imagen: montallantas,
-    descripcion: 'Soluciones para tus llantas y neumáticos.',
-    icono: '🛞'
+    descripcion: 'Encuentra soluciones para tus llantas y neumáticos.',
+    icono: '🛞',
+    numero: '04'
   }
 ];
 
 const beneficios = [
   {
-    icono: '🔎',
-    titulo: 'Fácil de encontrar',
+    icono: '⌕',
+    titulo: 'Encuentra fácilmente',
     descripcion: 'Explora diferentes categorías de servicios automotrices desde un solo lugar.'
   },
   {
     icono: '⚡',
     titulo: 'Ahorra tiempo',
-    descripcion: 'Encuentra rápidamente el tipo de servicio que necesita tu vehículo.'
+    descripcion: 'Encuentra rápidamente el servicio que necesita tu vehículo.'
   },
   {
     icono: '🚗',
-    titulo: 'Todo para tu vehículo',
-    descripcion: 'Accede a diferentes opciones de atención y cuidado automotriz.'
+    titulo: 'Todo en un solo lugar',
+    descripcion: 'Accede a distintas opciones para el cuidado de tu vehículo.'
   },
   {
-    icono: '👤',
-    titulo: 'Tu cuenta personal',
-    descripcion: 'Regístrate para acceder a tu espacio personal en VELOEXPRESS.'
+    icono: '♙',
+    titulo: 'Tu espacio personal',
+    descripcion: 'Crea tu cuenta y disfruta de tu propio espacio en VELOEXPRESS.'
   }
 ];
 
 const pasos = [
   {
     numero: '01',
-    icono: '👤',
+    icono: '♙',
     titulo: 'Crea tu cuenta',
-    descripcion: 'Regístrate en VELOEXPRESS para comenzar a explorar.'
+    descripcion: 'Regístrate en VELOEXPRESS para comenzar tu experiencia.'
   },
   {
     numero: '02',
-    icono: '🔍',
+    icono: '⌕',
     titulo: 'Explora los servicios',
     descripcion: 'Conoce las categorías disponibles para tu vehículo.'
   },
@@ -75,7 +79,7 @@ const pasos = [
     numero: '03',
     icono: '🚘',
     titulo: 'Encuentra lo que necesitas',
-    descripcion: 'Busca la opción que mejor se adapte a tus necesidades.'
+    descripcion: 'Descubre la opción que mejor se adapta a ti.'
   }
 ];
 
@@ -96,7 +100,7 @@ export default function Home() {
             Iniciar sesión
           </Link>
           <Link to="/register" className="home-register">
-            Registrarse
+            Crear cuenta <span>↗</span>
           </Link>
         </nav>
       </header>
@@ -106,23 +110,26 @@ export default function Home() {
         {/* PORTADA */}
         <section className="home-hero">
           <div className="home-hero-content">
-            <span className="home-tag">
-              BIENVENIDO A VELOEXPRESS
-            </span>
+            <div className="home-tag">
+              <span className="tag-dot"></span>
+              TU CAMINO COMIENZA AQUÍ
+            </div>
 
             <h1>
-              Tu vehículo merece
-              <span> el mejor servicio.</span>
+              Tu vehículo,
+              <span> siempre en</span>
+              <span className="hero-orange-text"> buenas manos.</span>
             </h1>
 
             <p>
-              Encuentra mecánicos, lavaderos, grúas y montallantas
-              en un solo lugar. Todo lo que necesitas para seguir tu camino.
+              Mecánicos, lavaderos, grúas y montallantas.
+              Encuentra todo lo que necesitas para tu vehículo
+              en un solo lugar.
             </p>
 
             <div className="home-hero-buttons">
               <Link to="/register" className="home-button">
-                Comenzar ahora →
+                Comenzar ahora <span>→</span>
               </Link>
 
               <Link to="/login" className="home-secondary-button">
@@ -131,27 +138,53 @@ export default function Home() {
             </div>
 
             <div className="home-hero-note">
-              <span>✓</span> Una plataforma pensada para cuidar tu vehículo.
+              <span>✓</span>
+              Una plataforma pensada para acompañarte en cada kilómetro.
             </div>
           </div>
 
           <div className="home-hero-decoration">
-            <div className="hero-circle">
-              🚘
+            <div className="hero-orbit hero-orbit-one"></div>
+            <div className="hero-orbit hero-orbit-two"></div>
+            <div className="hero-main-circle">
+              <span>🚘</span>
             </div>
-            <span className="hero-floating hero-floating-one">🔧</span>
-            <span className="hero-floating hero-floating-two">🛞</span>
-            <span className="hero-floating hero-floating-three">🚨</span>
+            <div className="hero-floating hero-floating-one">🔧</div>
+            <div className="hero-floating hero-floating-two">🛞</div>
+            <div className="hero-floating hero-floating-three">🚨</div>
+            <div className="hero-decoration-label">
+              <strong>VELOEXPRESS</strong>
+              <span>Todo para tu vehículo</span>
+            </div>
+          </div>
+
+          <div className="hero-background-shape"></div>
+        </section>
+
+        {/* FRANJA INFORMATIVA */}
+        <section className="home-highlights">
+          <div>
+            <span className="highlight-icon">🔧</span>
+            <p><strong>Servicios</strong><small>Automotrices</small></p>
+          </div>
+          <div>
+            <span className="highlight-icon">📍</span>
+            <p><strong>Todo en un lugar</strong><small>Fácil de explorar</small></p>
+          </div>
+          <div>
+            <span className="highlight-icon">⚡</span>
+            <p><strong>Fácil y rápido</strong><small>Una mejor experiencia</small></p>
           </div>
         </section>
 
-        {/* CATEGORÍAS */}
+        {/* SERVICIOS */}
         <section className="home-services" id="servicios">
           <div className="home-section-heading">
-            <span>EXPLORA VELOEXPRESS</span>
-            <h2>Todo lo que tu vehículo necesita</h2>
+            <span className="section-eyebrow">EXPLORA VELOEXPRESS</span>
+            <h2>Tenemos lo que tu vehículo necesita<span>.</span></h2>
             <p>
-              Encuentra diferentes categorías de servicios automotrices.
+              Cuatro categorías para ayudarte a encontrar el servicio
+              adecuado en el momento indicado.
             </p>
           </div>
 
@@ -165,13 +198,8 @@ export default function Home() {
               >
                 <div className="home-card-image">
                   <img src={servicio.imagen} alt={servicio.nombre} />
-
-                  <div className="home-card-overlay">
-                    <span>INICIA SESIÓN</span>
-                    <h3>Conoce más</h3>
-                    <p>Inicia sesión para saber más</p>
-                    <span className="overlay-arrow">→</span>
-                  </div>
+                  <span className="home-card-number">{servicio.numero}</span>
+                  <div className="home-card-image-overlay"></div>
                 </div>
 
                 <div className="home-card-info">
@@ -179,7 +207,7 @@ export default function Home() {
                   <h3>{servicio.nombre}</h3>
                   <p>{servicio.descripcion}</p>
                   <span className="home-card-link">
-                    Descubrir servicio →
+                    Descubrir servicio <span>↗</span>
                   </span>
                 </div>
               </Link>
@@ -190,16 +218,18 @@ export default function Home() {
         {/* BENEFICIOS */}
         <section className="home-benefits" id="beneficios">
           <div className="home-section-heading">
-            <span>¿POR QUÉ VELOEXPRESS?</span>
-            <h2>Una forma más sencilla de encontrar servicios</h2>
+            <span className="section-eyebrow">¿POR QUÉ VELOEXPRESS?</span>
+            <h2>Hacemos tu camino <span>más fácil.</span></h2>
             <p>
-              Queremos hacer más fácil el cuidado y mantenimiento de tu vehículo.
+              Una experiencia sencilla para encontrar alternativas
+              de cuidado y atención automotriz.
             </p>
           </div>
 
           <div className="benefits-grid">
-            {beneficios.map((beneficio) => (
+            {beneficios.map((beneficio, index) => (
               <article className="benefit-card" key={beneficio.titulo}>
+                <span className="benefit-index">0{index + 1}</span>
                 <div className="benefit-icon">{beneficio.icono}</div>
                 <h3>{beneficio.titulo}</h3>
                 <p>{beneficio.descripcion}</p>
@@ -211,10 +241,11 @@ export default function Home() {
         {/* COMO FUNCIONA */}
         <section className="home-how" id="como-funciona">
           <div className="home-section-heading">
-            <span>ES MUY SENCILLO</span>
-            <h2>¿Cómo funciona VELOEXPRESS?</h2>
+            <span className="section-eyebrow">EMPEZAR ES MUY FÁCIL</span>
+            <h2>Tu experiencia en tres pasos<span>.</span></h2>
             <p>
-              Comienza a explorar nuestra plataforma en tres sencillos pasos.
+              Entra, explora y encuentra lo que buscas.
+              Así de sencillo.
             </p>
           </div>
 
@@ -225,6 +256,7 @@ export default function Home() {
                 <div className="step-icon">{paso.icono}</div>
                 <h3>{paso.titulo}</h3>
                 <p>{paso.descripcion}</p>
+                <div className="step-line"></div>
               </article>
             ))}
           </div>
@@ -233,18 +265,17 @@ export default function Home() {
         {/* LLAMADO A REGISTRARSE */}
         <section className="home-callout">
           <div className="callout-decoration">V</div>
-
           <div className="home-callout-content">
-            <span>EMPIEZA TU EXPERIENCIA</span>
+            <span>ES HORA DE PONERTE EN MARCHA</span>
             <h2>Tu próximo servicio está a un clic.</h2>
             <p>
-              Crea tu cuenta y descubre todo lo que VELOEXPRESS
-              tiene para ofrecerte.
+              Crea tu cuenta y descubre una forma más sencilla
+              de encontrar servicios para tu vehículo.
             </p>
           </div>
 
-          <Link to="/register" className="home-button">
-            Crear mi cuenta →
+          <Link to="/register" className="callout-button">
+            Crear mi cuenta <span>→</span>
           </Link>
         </section>
 
@@ -277,11 +308,13 @@ export default function Home() {
           <div className="footer-links">
             <h3>VELOEXPRESS</h3>
             <p>Una plataforma para encontrar servicios automotrices.</p>
+            <span className="footer-slogan">MUÉVETE CON CONFIANZA.</span>
           </div>
         </div>
 
         <div className="footer-bottom">
-          © 2026 VELOEXPRESS - Todos los derechos reservados.
+          <span>© 2026 VELOEXPRESS</span>
+          <span>Todos los derechos reservados.</span>
         </div>
       </footer>
 

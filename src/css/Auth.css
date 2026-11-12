@@ -8,12 +8,15 @@
   width: 100%;
   min-height: 100vh;
   display: flex;
-  background: #f4f6fa !important;
-  font-family: Arial, sans-serif;
+  background: #fff8f2 !important;
+  font-family: 'Inter', Arial, sans-serif;
   color: #172033;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
+
+/* PANEL IZQUIERDO */
 
 .auth-page .auth-banner {
   width: 43%;
@@ -23,9 +26,11 @@
   flex-direction: column;
   justify-content: space-between;
   color: white;
-  background: linear-gradient(145deg, #102443, #174f80) !important;
+  background: linear-gradient(145deg, #172033, #24466b) !important;
   position: relative;
   overflow: hidden;
+
+  animation: bannerEntrada 0.85s ease both;
 }
 
 .auth-page .auth-banner::before,
@@ -60,17 +65,19 @@
   padding: 5px;
   position: relative;
   z-index: 1;
+  animation: logoEntrada 1s ease both;
 }
 
 .auth-page .auth-banner-content {
   max-width: 480px;
   position: relative;
   z-index: 1;
+  animation: contenidoEntrada 1s ease 0.15s both;
 }
 
 .auth-page .auth-tag,
 .auth-page .auth-subtitle {
-  color: #f29a38;
+  color: #ff9b45;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 2px;
@@ -96,6 +103,8 @@
   z-index: 1;
 }
 
+/* PANEL DERECHO */
+
 .auth-page .auth-form-section {
   width: 57%;
   padding: 35px;
@@ -103,7 +112,9 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  background: #f4f6fa;
+  background: #fff8f2;
+
+  animation: formularioEntrada 0.85s ease both;
 }
 
 .auth-page .auth-back {
@@ -114,25 +125,37 @@
   text-decoration: none;
   font-size: 14px;
   font-weight: bold;
+  transition: 0.25s;
 }
 
 .auth-page .auth-back:hover {
-  color: #e65b2f;
+  color: #f07824;
+  transform: translateX(-4px);
 }
+
+/* TARJETA */
 
 .auth-page .auth-card {
   width: 100%;
   max-width: 430px;
   background: white !important;
   padding: 42px;
-  border-radius: 18px;
-  box-shadow: 0 12px 40px rgba(20,44,80,0.08);
+  border-radius: 20px;
+  box-shadow: 0 15px 45px rgba(20,44,80,0.09);
+
+  animation: tarjetaEntrada 0.9s ease 0.2s both;
+  transition: box-shadow 0.3s ease;
+}
+
+.auth-page .auth-card:hover {
+  box-shadow: 0 20px 55px rgba(20,44,80,0.13);
 }
 
 .auth-page .auth-card h2 {
   font-size: 30px;
   color: #142c50;
   margin: 12px 0;
+  font-weight: 800;
 }
 
 .auth-page .auth-description {
@@ -159,18 +182,18 @@
   width: 100%;
   padding: 14px;
   border: 1px solid #dce2eb;
-  border-radius: 8px;
+  border-radius: 9px;
   outline: none;
   font-size: 14px;
   background: #fafbfc;
   color: #172033;
-  transition: 0.2s;
+  transition: 0.25s;
 }
 
 .auth-page .auth-card input:focus {
-  border-color: #1d639e;
+  border-color: #f07824;
   background: white;
-  box-shadow: 0 0 0 3px rgba(29,99,158,0.10);
+  box-shadow: 0 0 0 4px rgba(240,120,36,0.12);
 }
 
 .auth-page .auth-password {
@@ -188,7 +211,7 @@
   right: 10px;
   border: none;
   background: transparent;
-  color: #1d639e;
+  color: #e76c20;
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
@@ -199,18 +222,20 @@
   margin-top: 20px;
   padding: 15px;
   border: none;
-  border-radius: 8px;
-  background: #e65b2f !important;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #f58a35, #e65b2f) !important;
   color: white !important;
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.25s;
+  box-shadow: 0 6px 15px rgba(230,91,47,0.18);
 }
 
 .auth-page .auth-submit:hover {
   background: #c94721 !important;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(230,91,47,0.25);
 }
 
 .auth-page .auth-submit:disabled {
@@ -240,11 +265,72 @@
   color: #e65b2f;
   text-decoration: none;
   font-weight: bold;
+  transition: 0.2s;
 }
 
 .auth-page .auth-switch a:hover {
+  color: #bd431d;
   text-decoration: underline;
 }
+
+/* ANIMACIONES */
+
+@keyframes bannerEntrada {
+  from {
+    opacity: 0;
+    transform: translateX(-55px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes formularioEntrada {
+  from {
+    opacity: 0;
+    transform: translateX(45px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes tarjetaEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes logoEntrada {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contenidoEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* TABLET */
 
 @media (max-width: 850px) {
   .auth-page .auth-banner {
@@ -266,9 +352,12 @@
   }
 }
 
+/* CELULAR */
+
 @media (max-width: 650px) {
   .auth-page {
     flex-direction: column;
+    overflow: auto;
   }
 
   .auth-page .auth-banner {
@@ -308,5 +397,17 @@
 
   .auth-page .auth-card {
     padding: 28px 22px;
+  }
+}
+
+/* RESPETAR USUARIOS QUE PREFIEREN MENOS ANIMACIÓN */
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-page .auth-banner,
+  .auth-page .auth-form-section,
+  .auth-page .auth-card,
+  .auth-page .auth-banner img,
+  .auth-page .auth-banner-content {
+    animation: none;
   }
 }
